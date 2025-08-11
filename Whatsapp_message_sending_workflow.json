@@ -1,0 +1,833 @@
+{
+  "name": "Whatsapp message sending workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Customer Type'] }}",
+                    "rightValue": "Enquiry",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3ae424b2-363c-4a68-aead-fd413e7d4bfb"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1e8867ea-51dc-45dc-918f-1bd5eedfd80f",
+                    "leftValue": "={{ $json['Customer Type'] }}",
+                    "rightValue": "Test Drive Booking",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3f58890e-af56-4c39-863d-4a069fcbeebe",
+                    "leftValue": "={{ $json['Customer Type'] }}",
+                    "rightValue": "Offline Visitor",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e20e1812-e941-45f6-b41d-a43dbf01b82e",
+                    "leftValue": "={{ $json['Customer Type'] }}",
+                    "rightValue": "Car Booking Confirmation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d1c682e9-0783-422a-ab99-b17b6d6e3387",
+                    "leftValue": "={{ $json['Customer Type'] }}",
+                    "rightValue": "Service Enquiry",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1760,
+        -200
+      ],
+      "id": "7afd2b22-755b-4a61-8481-38958d39d88a",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU",
+          "mode": "list",
+          "cachedResultName": "Email Verification",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU/edit#gid=0"
+        },
+        "event": "rowUpdate",
+        "includeInOutput": "old",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1940,
+        -160
+      ],
+      "id": "3db0d89b-cffe-44ff-abb4-de834bc0b9a7",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "BUn3N6HNBJaFkXA0",
+          "name": "Google Sheets Trigger account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "730471793479846",
+        "recipientPhoneNumber": "={{'91' + $json['Phone '].toString()}}",
+        "textBody": "={{ $json.Message }} \n\nHi {{ $json.Name }},  \n\nThank you for reaching out to us regarding the {{ $json.Model }} in the {{ $json.Varient }} variant.  We have received your details, and one of our team members will connect with you shortly.\n\nBest Regards,\n\nDerik Groups",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -540
+      ],
+      "id": "eb2fa8fb-023a-4c92-b8a8-18cab5d2cf53",
+      "name": "WhatsApp Business Cloud",
+      "webhookId": "719ada69-9964-4324-81bc-c04ec0d1a6f0",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "v2L6szUd5TaImBWO",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fd74e396-611f-4d91-8ca9-adc472aacc17",
+              "leftValue": "={{ $json['Phone '].toString() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1200,
+        -520
+      ],
+      "id": "b1dcf6e3-2aaa-4734-ae0c-7da02cbcdb83",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "730471793479846",
+        "recipientPhoneNumber": "={{ '91' + $json['Phone '].toString()}}",
+        "textBody": "= {{ $json['Message'] }}\n🖐️Hi {{ $json.Name }},\n\nThank you for booking a test drive for the {{ $json.Model }} - {{ $json.Varient }}.\n\nWe are excited for you to experience the car firsthand! Our team will contact you soon to confirm the date and time for your test drive.\n\nSee you soon,\nDerik Groups",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -360
+      ],
+      "id": "a86cf05c-c2ce-4012-98ed-00bb9f699edd",
+      "name": "WhatsApp Business Cloud1",
+      "webhookId": "719ada69-9964-4324-81bc-c04ec0d1a6f0",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "v2L6szUd5TaImBWO",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fd74e396-611f-4d91-8ca9-adc472aacc17",
+              "leftValue": "={{ $json['Phone '].toString() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1200,
+        -340
+      ],
+      "id": "f407be2e-996c-4361-86b2-8096417f33c9",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "730471793479846",
+        "recipientPhoneNumber": "={{'91' + $json['Phone '].toString()}}",
+        "textBody": "=  {{ $json['Message'] }}\nHi {{ $json.Name }},\n\nThank you for reaching out to us for your {{ $json.Model }}'s service needs.\n\nWe have forwarded your request to our service department. A service advisor will contact you shortly to schedule an appointment.\n\nBest Regards,\nDerik Groups Service Team",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        80
+      ],
+      "id": "aa037cf9-b1bd-41a6-8568-ca6080314da3",
+      "name": "WhatsApp Business Cloud4",
+      "webhookId": "719ada69-9964-4324-81bc-c04ec0d1a6f0",
+      "retryOnFail": true,
+      "credentials": {
+        "whatsAppApi": {
+          "id": "v2L6szUd5TaImBWO",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fd74e396-611f-4d91-8ca9-adc472aacc17",
+              "leftValue": "={{ $json['Phone '].toString() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1180,
+        100
+      ],
+      "id": "0c752386-0984-4439-8379-4b0c0cc1a22e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ba78f5f1-3c38-47f9-acea-94ae92f6ef67",
+              "name": "Phone",
+              "value": "={{ $('Google Sheets Trigger').item.json['Phone '] }}",
+              "type": "string"
+            },
+            {
+              "id": "e9542f29-952e-4d5d-a90f-cf5d6de731c9",
+              "name": "Phone Status",
+              "value": "= Send",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -260,
+        -300
+      ],
+      "id": "95143eb3-bce5-4e07-9c17-95eaee059620",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU",
+          "mode": "list",
+          "cachedResultName": "Email Verification",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Phone ": "={{ $json.Phone }}",
+            "Phone Status": "Send"
+          },
+          "matchingColumns": [
+            "Phone "
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone ",
+              "displayName": "Phone ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Varient",
+              "displayName": "Varient",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Type",
+              "displayName": "Customer Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone Status",
+              "displayName": "Phone Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -20,
+        -300
+      ],
+      "id": "c283a957-0e50-443f-aeab-0dca5dbb693e",
+      "name": "Google Sheets",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ixK7bk1WBBixRy1y",
+          "name": "Google Sheets account 9"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "730471793479846",
+        "recipientPhoneNumber": "={{ '91' + $json['Phone '].toString()}}",
+        "textBody": "= {{ $json['Message'] }}\n\nHi {{ $json.Name }},\n\nIt was a pleasure having you at our showroom today. We hope you had a great experience exploring our cars.\n\nThank you for showing interest in the {{ $json.Model }}. If you have any more questions, please feel free to reach out.\n\nWarm Regards,\nDerik Groups",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -220
+      ],
+      "id": "f0e0e10e-ae0e-47c2-9852-0846586dab74",
+      "name": "WhatsApp Business Cloud2",
+      "webhookId": "719ada69-9964-4324-81bc-c04ec0d1a6f0",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "v2L6szUd5TaImBWO",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fd74e396-611f-4d91-8ca9-adc472aacc17",
+              "leftValue": "={{ $json['Phone '].toString() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1200,
+        -200
+      ],
+      "id": "f7737344-32ad-4282-b999-41bb639b555e",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "730471793479846",
+        "recipientPhoneNumber": "={{ '91' + $json['Phone '].toString()}}",
+        "textBody": "=  {{ $json['Message'] }} \n\nHi {{ $json.Name }},  \n\n🎉Congratulations! Thank you for choosing us and booking your brand new {{ $json.Model }} - {{ $json.Varient }}.  We are thrilled to welcome you to the Derik Groups family. Our team will keep you updated on the next steps for delivery.\n\nSincerely, \nDerik Groups",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -80
+      ],
+      "id": "75f72e19-2e12-4774-8e36-c2eb0ae5bebb",
+      "name": "WhatsApp Business Cloud3",
+      "webhookId": "719ada69-9964-4324-81bc-c04ec0d1a6f0",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "v2L6szUd5TaImBWO",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fd74e396-611f-4d91-8ca9-adc472aacc17",
+              "leftValue": "={{ $json['Phone '].toString() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1180,
+        -60
+      ],
+      "id": "8837abb3-7825-4502-9ead-0e6eeab7aaac",
+      "name": "If4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Business Cloud": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Business Cloud1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Business Cloud4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Business Cloud2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Business Cloud3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d2e4be28-506d-44aa-83dc-c6e2f501f5eb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "64237e6ed13c22ceb7a488287299c49e2fbd0267120ba648886448008c00a817"
+  },
+  "id": "7QIFWar7EcORgQd1",
+  "tags": []
+}
