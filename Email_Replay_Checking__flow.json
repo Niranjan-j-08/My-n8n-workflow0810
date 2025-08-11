@@ -1,0 +1,587 @@
+{
+  "name": "Email Replay Checking  flow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1100,
+        -60
+      ],
+      "id": "622fa81f-f46a-4abb-aa5b-637c6cc29935",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "q": "from:(*@gmail.com) subject:(Re:) in:inbox newer_than:2d"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -940,
+        -60
+      ],
+      "id": "20e0d8fe-de5a-46b4-b176-61c0ce668107",
+      "name": "Gmail",
+      "webhookId": "bacb2384-cef0-47e2-9a35-416697fdbc85",
+      "notesInFlow": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FCsQ5DEuTQSDZpjp",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "90648409-24d3-4f25-b9d2-93be2fc64b79",
+              "name": "email",
+              "value": "={{ $json.From.extractEmail() }}",
+              "type": "string"
+            },
+            {
+              "id": "85fd0a1e-5647-49fe-a09f-6e83f94b4ff8",
+              "name": "replySnippet",
+              "value": "={{ $json.snippet}}",
+              "type": "string"
+            },
+            {
+              "id": "d4ef9f10-5961-4792-8830-6401dc344269",
+              "name": "brand",
+              "value": "={{ $json.Subject}}",
+              "type": "string"
+            },
+            {
+              "id": "b71c31c3-0bbf-425a-a5cb-177cb5ae3403",
+              "name": "subject",
+              "value": "={{ $json.Subject }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -620,
+        -60
+      ],
+      "id": "3d167b4a-d818-4abc-a600-bc9b1ce6691a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['replySnippet'].toLowerCase() }}",
+                    "rightValue": "price",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "2329290e-d069-4956-b41e-d122a2538fd8"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Price"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "576b32cb-8e71-44bd-b009-577cd176b1f9",
+                    "leftValue": "={{ $json['replySnippet'].toLowerCase().match(/loan|EMI|finance/) }}",
+                    "rightValue": "Finance",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Finance"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6fe1756c-5dca-4d45-a68d-2353dc635994",
+                    "leftValue": "={{ $json['replySnippet'].toLowerCase() }}",
+                    "rightValue": "stock",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Stock"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "aa46809c-9add-4058-84d9-bc3b7e20014d",
+                    "leftValue": "={{ $json['replySnippet'].toLowerCase() }}",
+                    "rightValue": "available",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Stock"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f860ce59-a7f6-446b-91d5-3395ff986c90",
+                    "leftValue": "Default",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notRegex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Other"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -360,
+        -80
+      ],
+      "id": "8ecc239e-35d6-4be2-8bab-2decafe7b665",
+      "name": "Detect category"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39f284e1-acb1-41e3-b6b0-e93384e6c5d3",
+              "name": "category",
+              "value": "Price",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "email, brand, category,replySnippet",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -60,
+        -200
+      ],
+      "id": "b55450f5-27ee-4495-b473-1fb85be3be66",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d95635e-5661-4252-9764-b77adf67ff1a",
+              "name": "category",
+              "value": "Stock",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -60,
+        -60
+      ],
+      "id": "2a4438ab-8cac-4bc3-b67a-035158a4b02e",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b61aefd9-8f75-4cda-8bb8-187a9a7b20ce",
+              "name": "category",
+              "value": "Stock",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "email, brand, category, replySnippet",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -60,
+        100
+      ],
+      "id": "7714044b-09a2-4969-88bf-7c9d992a1332",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aba2fc97-62ae-41dd-8650-bfa28f67cc5e",
+              "name": "Category",
+              "value": "Other",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -320,
+        260
+      ],
+      "id": "caa1465f-753b-4a98-b9ad-8d9e544ec43c",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "sendTo": "niranjan.j0806@gmail.com",
+        "subject": "=New Customer Reply - {{ $json.brand }} - {{ $json.category }}",
+        "message": "=<p> Hi Sales Team </p>\n<p> A customer has replied to our email campaign. </p>\n<ul> \n  <li><strong> Customer Email: </strong> {{ $json.email }} </li>\n  <li><strong>Brand: </strong> {{ $json.brand }} </li>\n  <li><strong>Category: <strong>  {{ $json.category }} </li>\n  <li><strong>Message: </strong> {{ $json.replySnippet }} </li> </ul>\n<p> Please follow up soon as possible.</p>\n\n<p> Regards, <br> Team Derik </p>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        -200
+      ],
+      "id": "8c1a1c54-0c07-495b-b0ba-8625e615294b",
+      "name": "Gmail1",
+      "webhookId": "104e628c-29ed-4c63-8650-f6ea504a1f53",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FCsQ5DEuTQSDZpjp",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "derikswdeveloper5@gmail.com",
+        "subject": "=New Customer Reply {{ $json.brand}} - {{ $json.category }}",
+        "message": "=<p> Hi Accounts Team </p>\n<p> A customer has replied to our email campaign. </p>\n<ul> \n  <li><strong> Customer Email: </strong> {{ $json.email }} </li>\n  <li><strong>Brand: </strong> {{ $json.brand }} </li>\n  <li><strong>Category: <strong>  {{ $json.category }} </li>\n  <li><strong>Message: </strong> {{ $json.replySnippet }} </li> </ul>\n<p> Please follow up soon as possible.</p>\n\n<p> Regards, <br> Team Derik </p>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        -60
+      ],
+      "id": "6c5dbfb5-41ce-466f-9aac-8291539c583d",
+      "name": "Gmail2",
+      "webhookId": "fa9a73e5-af72-4b6a-a37a-0c5515a1459d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FCsQ5DEuTQSDZpjp",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "antonymax@gmail.com",
+        "subject": "=New Customer Reply - {{ $json.brand }} - {{ $json.category }}",
+        "message": "=<p> Hi Sales Team </p>\n<p> A customer has replied to our email campaign. </p>\n<ul>\n<li><strong> Customer Email: </strong> {{ $json[\"email\"] }} \n</li>   <li><strong>Brand: </strong> {{ $json.brand }} </li>\n<li><strong>Category: <strong>  {{ $json.category }} </li>\n<li><strong>Message: </strong> {{ $json.replySnippet }} </li> \n</ul>\n<p> Please follow up soon as possible.</p> \n<p> Regards, <br> Team Derik </p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        100
+      ],
+      "id": "d5b743f0-9141-44ec-b43f-22a342f40fb0",
+      "name": "Gmail3",
+      "webhookId": "f11e1ff2-b13d-4741-8307-63625eff8acd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FCsQ5DEuTQSDZpjp",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "derikswdeveloper5@gmail.com",
+        "subject": "=New Customer Reply - {{ $json.brand }} - {{ $json.Category }}",
+        "message": "=<p> Hi Sales Team </p>\n<p> A customer has replied to our email campaign. </p>\n<ul> \n  <li><strong> Customer Email: </strong> {{ $json.email }} </li>\n  <li><strong>Brand: </strong> {{ $json.brand }} </li>\n  <li><strong>Category: <strong>  {{ $json.category }} </li>\n  <li><strong>Message: </strong> {{ $json.replySnippet }} </li> </ul>\n<p> Please follow up soon as possible.</p>\n\n<p> Regards, <br> Team Derik </p>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -140,
+        260
+      ],
+      "id": "1e3e3b8a-c534-45e2-985f-ab0b5eaf6d1e",
+      "name": "Gmail4",
+      "webhookId": "0b1f741e-8459-443f-83b2-2055332c54e5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FCsQ5DEuTQSDZpjp",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const subject = (item.json.subject || \"\").toLowerCase();\n  let brand = \"\";\n\n  if (subject.includes(\"honda\")) brand = \"honda\";\n  else if (subject.includes(\"hyundai\")) brand = \"hyundai\";\n  else if (subject.includes(\"mahindra prosper\") || subject.includes(\"mahindra prosper\")) brand = \"mahindra_prosper\";\n  else if (subject.includes(\"mahindra\")) brand = \"mahindra\";\n  else if (subject.includes(\"tata tn\")) brand = \"tata_tn\";\n  else if (subject.includes(\"tata kl\")) brand = \"tata_kl\";\n  else brand = \"unknown\";\n\n  \n  return {\n    json: {\n      ...item.json,\n      brand\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        160
+      ],
+      "id": "70742452-11ab-4d03-a0eb-57375b121067",
+      "name": "Code for Brand detect"
+    },
+    {
+      "parameters": {
+        "jsCode": "const seen = new Set();\nreturn items.filter(item =>{\n  const id=item.json.id;\n  if(seen.has(id)){\n    return false;\n  }\n    else{\n      seen.add(id);\n      return true;\n    }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -780,
+        -60
+      ],
+      "id": "c24b7ffb-f9a6-4c11-acb8-01a639dd6c04",
+      "name": "Code1 for reply checking"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Code1 for reply checking",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code for Brand detect",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect category": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Gmail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Gmail2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Gmail3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Gmail4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code for Brand detect": {
+      "main": [
+        [
+          {
+            "node": "Detect category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1 for reply checking": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1b145d66-07c0-446c-9185-856eedca7597",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "64237e6ed13c22ceb7a488287299c49e2fbd0267120ba648886448008c00a817"
+  },
+  "id": "TwCDoDkZubLdp9ZQ",
+  "tags": []
+}
