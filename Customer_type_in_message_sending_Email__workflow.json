@@ -1,0 +1,642 @@
+{
+  "name": "Customer type in message sending Email  workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU",
+          "mode": "list",
+          "cachedResultName": "Email Verification",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU/edit#gid=0"
+        },
+        "event": "rowUpdate",
+        "includeInOutput": "old",
+        "options": {
+          "columnsToWatch": [
+            "Email",
+            "Phone "
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2600,
+        -180
+      ],
+      "id": "82c06ff4-bef6-4d29-a7ea-54a67b87e781",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "BUn3N6HNBJaFkXA0",
+          "name": "Google Sheets Trigger account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Email'] }}",
+        "subject": "=Hi {{ $json.Name }} Thank You For Enquiry",
+        "emailType": "text",
+        "message": "={{ $json.Message }} \n\nHi {{ $json.Name }},\n\nThank you for reaching out to us regarding the {{ $json.Model }} in the {{ $json.Varient }} variant.\n\nWe have received your details, and one of our team members will connect with you shortly.\n\nBest Regards,\nDerik Groups",
+        "options": {
+          "senderName": "Derik Groups"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1260,
+        -520
+      ],
+      "id": "54544d86-8f50-4382-8a32-b6fd70fcd31a",
+      "name": "Gmail",
+      "webhookId": "642dbefb-bb0c-42ed-999d-5184d8b34389",
+      "retryOnFail": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L0J6x2YRruCGSh5a",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU",
+          "mode": "list",
+          "cachedResultName": "Email Verification",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BHXVsvq-AWDJQt79OzAVmmRhKG7iExtEPtFP_GmkfMU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $json.Email }}",
+            "Status": "=Mail Send "
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone ",
+              "displayName": "Phone ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Varient",
+              "displayName": "Varient",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer Type",
+              "displayName": "Customer Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone Status",
+              "displayName": "Phone Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        220,
+        -180
+      ],
+      "id": "cd955846-3243-4a3d-9c48-baf1a1f60d91",
+      "name": "Google Sheets",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ixK7bk1WBBixRy1y",
+          "name": "Google Sheets account 9"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json[\"Customer Type\"] }}",
+                    "rightValue": "Enquiry",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "f6a77bae-c083-45ee-9ff0-f0006512dbc3"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Enquiry path"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f608d982-2465-484b-962a-e6c965982a93",
+                    "leftValue": "={{ $json[\"Customer Type\"] }}",
+                    "rightValue": "Test Drive Booking",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Test Drive path"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6007ac15-b499-4fea-8b0d-6264d0f30a84",
+                    "leftValue": "={{ $json[\"Customer Type\"] }}",
+                    "rightValue": "=Offline Visitor",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Offlin visitor path"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e6a40381-af1c-4966-ac4a-0c6df0929c4f",
+                    "leftValue": "={{ $json[\"Customer Type\"] }}",
+                    "rightValue": "Car Booking Confirmation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Car Booking Confirmation path"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1c614ba4-cf58-4845-a492-758ab39937e8",
+                    "leftValue": "={{ $json[\"Customer Type\"] }}",
+                    "rightValue": "Service Enquiry",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Service Enquiry path"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2160,
+        -220
+      ],
+      "id": "e95d3dde-9d2d-4fff-85b7-de7dfaae7a03",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Email'] }}",
+        "subject": "=Hi {{ $json.Name }} Thank You For Service Enquiry",
+        "emailType": "text",
+        "message": "=  {{ $json['Message'] }}\nHi {{ $json.Name }},\n\nThank you for reaching out to us for your {{ $json.Model }}'s service needs.\n\nWe have forwarded your request to our service department. A service advisor will contact you shortly to schedule an appointment.\n\nBest Regards,\nDerik Groups Service Team",
+        "options": {
+          "senderName": "Derik Groups"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1260,
+        300
+      ],
+      "id": "5817cfe7-860e-4638-81d8-730dd50f9d5b",
+      "name": "Gmail6",
+      "webhookId": "642dbefb-bb0c-42ed-999d-5184d8b34389",
+      "retryOnFail": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L0J6x2YRruCGSh5a",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Email'] }}",
+        "subject": "=Hi {{ $json.Name }} Thank You For Car Booking Confirmation ",
+        "emailType": "text",
+        "message": "=  {{ $json['Message'] }}\nHi {{ $json.Name }},\n\nCongratulations! Thank you for choosing us and booking your brand new {{ $json.Model }} - {{ $json.Varient }}.\n\nWe are thrilled to welcome you to the Derik Groups family. Our team will keep you updated on the next steps for delivery.\n\nSincerely,\nDerik Groups",
+        "options": {
+          "senderName": "Derik Groups"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1260,
+        100
+      ],
+      "id": "966d2d83-a5a3-4099-965c-d4a26cda5ca8",
+      "name": "Gmail7",
+      "webhookId": "642dbefb-bb0c-42ed-999d-5184d8b34389",
+      "retryOnFail": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L0J6x2YRruCGSh5a",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Email'] }}",
+        "subject": "=Hi {{ $json.Name }} Thank You For Offline Visitor\t",
+        "emailType": "text",
+        "message": "=  {{ $json['Message'] }}\n\nHi {{ $json.Name }},\n\nIt was a pleasure having you at our showroom today. We hope you had a great experience exploring our cars.\n\nThank you for showing interest in the {{ $json.Model }}. If you have any more questions, please feel free to reach out.\n\nWarm Regards,\nDerik Groups",
+        "options": {
+          "senderName": "Derik Groups"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1260,
+        -100
+      ],
+      "id": "fad32594-8092-4c46-9ae9-3d9f9cf26058",
+      "name": "Gmail8",
+      "webhookId": "642dbefb-bb0c-42ed-999d-5184d8b34389",
+      "retryOnFail": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L0J6x2YRruCGSh5a",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Email'] }}",
+        "subject": "=Hi {{ $json.Name }} Thank You For Test Drive Booking",
+        "emailType": "text",
+        "message": "=  {{ $json['Message'] }}\nHi {{ $json.Name }},\n\nThank you for booking a test drive for the {{ $json.Model }} - {{ $json.Varient }}.\n\nWe are excited for you to experience the car firsthand! Our team will contact you soon to confirm the date and time for your test drive.\n\nSee you soon,\nDerik Groups",
+        "options": {
+          "senderName": "Derik Groups"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1260,
+        -280
+      ],
+      "id": "fb2fc87e-a3f4-4ec1-8741-69e144e44acb",
+      "name": "Gmail9",
+      "webhookId": "642dbefb-bb0c-42ed-999d-5184d8b34389",
+      "retryOnFail": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "L0J6x2YRruCGSh5a",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ba78f5f1-3c38-47f9-acea-94ae92f6ef67",
+              "name": "Email",
+              "value": "={{ $('Google Sheets Trigger').item.json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "e9542f29-952e-4d5d-a90f-cf5d6de731c9",
+              "name": "Status",
+              "value": "=  Mail Send",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -340,
+        -180
+      ],
+      "id": "2605fec3-d146-4708-8815-5975c44cd15b",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail9",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail9": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail8": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail7": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail6": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2acf63a3-2d53-40a1-bfb8-e12fc54c34fd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "64237e6ed13c22ceb7a488287299c49e2fbd0267120ba648886448008c00a817"
+  },
+  "id": "9m8tG4rpIeI4Bkmv",
+  "tags": []
+}
