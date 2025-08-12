@@ -1,0 +1,295 @@
+{
+  "name": "MAHINDRA 3",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -680,
+        80
+      ],
+      "id": "a9ab02de-9ff1-4d03-b6a0-35e4715c2e76",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bb771039-b50d-4a78-9a0d-8b33bda331da",
+              "name": "=prompt",
+              "value": "=How does the  {{ $json[\"Model\"] }}- {{$json[\"Varient\"]}}- {{$json[\"BRAND\"]}} compare with other cars in the same category?. Format output using HTML like this:<br><ul><li><b>Feature 1</li></b></br><li><b>Feature 2</li></b></br><li><b>Feature 3</li></b></br></ul>Do not use *,numbers,or dashes. Use <ul><li> for bullet formatting and <b> for bold heading",
+              "type": "string"
+            },
+            {
+              "id": "4ffff644-928a-4594-aa52-9e29fe367f52",
+              "name": "offer",
+              "value": "={{$json[\"OfferImage\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "88ddfdd5-5164-40ed-98b1-980f084d75a2",
+              "name": "Name",
+              "value": "={{ $json[\"Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "707cb38e-8598-49a4-b5c6-bc1635bdb38a",
+              "name": "variant",
+              "value": "={{ $json[\"Varient\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "94bfb8e9-4149-46d3-8faa-845efc3fb286",
+              "name": "Brand",
+              "value": "={{ $json[\"BRAND\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "919526a0-f4a3-4e09-9e5f-3ec7f6149243",
+              "name": "mail",
+              "value": "={{ $json[\"Email\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -660,
+        -200
+      ],
+      "id": "fbb1d671-ba18-445e-8e5a-228417bb97fb",
+      "name": "set node for gemini",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyA_UEXWotFoXK2WG0ztjXyS0sofkgW426E",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"contents\":[\n{\n\"role\":\"user\",\n\"parts\":[\n{\n\"text\":\"{{$json[\"prompt\"]}}\"\n}\n]\n}\n]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -440,
+        -200
+      ],
+      "id": "0be59f44-95c4-48c9-ad5b-e15f0e5bb799",
+      "name": "HTTP Request gemini",
+      "retryOnFail": false,
+      "maxTries": 2,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "59e44e3e-2704-4597-8fe8-ee50b6eff324",
+              "name": "message",
+              "value": "= Dear valued customer {{ $json[\"Name\"] }} ,\nIt was a pleasure having you visit our showroom! we hope you enjoyed exploring our range of vehicles.\n\n\n{{ $json[\"candidates\"] [0] [\"content\"] [\"parts\"] [0] [\"text\"].replace(/\\n/g,\"<br><br>\")}}\n\n\n\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -260,
+        -200
+      ],
+      "id": "00eb9408-df6f-4806-8e28-c27b6ad66bba",
+      "name": "Mail set node",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json[\"MAIL\"] }}",
+        "subject": "=Here are some of the standout features of the  {{$json[\"MODEL\"]}} - {{ $json[\"VARIANT\"] }} -{{ $json[\"BRAND\"] }} that we believe you'll appreciate.",
+        "message": "={{ $json[\"message\"] }}<br><br>\nYour Exclusive Offer<br><br> <img src=\"{{ $json[\"OfferImage\"]  }}\"alt=\"Car offer\" width=\"400\"><br><br>\n\nThank You for your time!\n\n\n\n\n\nWarm Regards,\nTeam Derik\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        80
+      ],
+      "id": "4889ee8b-e313-47ff-ab3f-d01713fb6a96",
+      "name": "Gmail (send msg)",
+      "webhookId": "74e6f204-df73-4592-babd-da66dcad1130",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yHiXMwmOSP49VtOo",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1vxb5GiJOkRhOlaWX4JAp8sHhP02WIvu0HcHOfMrbplQ/edit?gid=260297023#gid=260297023",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 260297023,
+          "mode": "list",
+          "cachedResultName": "MAHINDRA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vxb5GiJOkRhOlaWX4JAp8sHhP02WIvu0HcHOfMrbplQ/edit#gid=260297023"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -880,
+        -200
+      ],
+      "id": "b6fd5c6b-87db-4bdf-8375-5a7887157c19",
+      "name": "Testing Sheet",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "pGXHT3Biww9Q6gPW",
+          "name": "Google Sheets account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 14
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1100,
+        -200
+      ],
+      "id": "b5a312c0-6816-4e99-92c3-ca770f6aa442",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Gmail (send msg)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set node for gemini": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request gemini": {
+      "main": [
+        [
+          {
+            "node": "Mail set node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail set node": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail (send msg)": {
+      "main": [
+        []
+      ]
+    },
+    "Testing Sheet": {
+      "main": [
+        [
+          {
+            "node": "set node for gemini",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Testing Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "d61c8e26-f9a4-4d5b-affd-f00a75e632c2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "76c6092dd93a033c9847e2e8207d6546750d4825e60858fe5442b38806941b04"
+  },
+  "id": "fXb7f8mHhtXPY3aj",
+  "tags": []
+}

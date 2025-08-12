@@ -1,0 +1,287 @@
+{
+  "name": "TATA_KL 5",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        40,
+        140
+      ],
+      "id": "d1e86ce8-8542-47b3-ad95-e36833434d67",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bb771039-b50d-4a78-9a0d-8b33bda331da",
+              "name": "=prompt",
+              "value": "=How does the  {{ $json[\"Model\"] }}- {{$json[\"Varient\"]}}- {{$json[\"BRAND\"]}} compare with other cars in the same category?. Format output using HTML like this:<br><ul><li><b>Feature 1</li></b></br><li><b>Feature 2</li></b></br><li><b>Feature 3</li></b></br></ul>Do not use *,numbers,or dashes. Use <ul><li> for bullet formatting and <b> for bold heading",
+              "type": "string"
+            },
+            {
+              "id": "4ffff644-928a-4594-aa52-9e29fe367f52",
+              "name": "offer",
+              "value": "={{$json[\"OfferImage\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "88ddfdd5-5164-40ed-98b1-980f084d75a2",
+              "name": "Name",
+              "value": "={{ $json[\"Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "707cb38e-8598-49a4-b5c6-bc1635bdb38a",
+              "name": "variant",
+              "value": "={{ $json[\"Varient\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "94bfb8e9-4149-46d3-8faa-845efc3fb286",
+              "name": "Brand",
+              "value": "={{ $json[\"BRAND\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "919526a0-f4a3-4e09-9e5f-3ec7f6149243",
+              "name": "mail",
+              "value": "={{ $json[\"Email\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        -140
+      ],
+      "id": "6b168813-c515-4eaf-a440-1ff736167d4a",
+      "name": "set node for gemini",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyDcJ84I4pbaP1EI42vw2Xwro5y8x1xadn4 ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"contents\":[\n{\n\"role\":\"user\",\n\"parts\":[\n{\n\"text\":\"{{$json[\"prompt\"]}}\"\n}\n]\n}\n]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        280,
+        -140
+      ],
+      "id": "9719010b-92bb-4202-9a82-5e0caf439054",
+      "name": "HTTP Request gemini",
+      "retryOnFail": false,
+      "maxTries": 2,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "59e44e3e-2704-4597-8fe8-ee50b6eff324",
+              "name": "message",
+              "value": "= Dear valued customer ,\nIt was a pleasure having you visit our showroom! we hope you enjoyed exploring our range of vehicles.\n\n\n{{ $json[\"candidates\"] [0] [\"content\"] [\"parts\"] [0] [\"text\"].replace(/\\n/g,\"<br><br>\")}}\n\n\n\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        460,
+        -140
+      ],
+      "id": "d7d3fd2b-9849-4048-a5b6-c3fdcc545b3d",
+      "name": "Mail set node",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json[\"MAIL\"] }}",
+        "subject": "=Here are some of the standout features of the  {{$json[\"MODEL\"]}} - {{ $json[\"VARIANT\"] }} -{{ $json[\"BRAND\"] }} that we believe you'll appreciate.",
+        "message": "={{ $json[\"message\"] }}<br><br>\nYour Exclusive Offer<br><br> <img src=\"{{ $json[\"OfferImage\"]  }}\"alt=\"Car offer\" width=\"400\"><br><br>\n\nThank You for your time!\n\n\n\n\n\nWarm Regards,\nTeam Derik\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        140
+      ],
+      "id": "7e89bd46-1046-429e-88b5-fd08932af990",
+      "name": "Gmail (send msg)",
+      "webhookId": "74e6f204-df73-4592-babd-da66dcad1130",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yHiXMwmOSP49VtOo",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1vxb5GiJOkRhOlaWX4JAp8sHhP02WIvu0HcHOfMrbplQ/edit?gid=1347181405#gid=1347181405",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1347181405,
+          "mode": "list",
+          "cachedResultName": "HONDA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vxb5GiJOkRhOlaWX4JAp8sHhP02WIvu0HcHOfMrbplQ/edit#gid=1347181405"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -160,
+        -140
+      ],
+      "id": "23fa4b59-c71b-4513-ba10-502792368afa",
+      "name": "Testing Sheet",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "pGXHT3Biww9Q6gPW",
+          "name": "Google Sheets account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 14
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -380,
+        -140
+      ],
+      "id": "9bb3273a-ef81-43fb-9e9f-459c57bf3c80",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Gmail (send msg)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set node for gemini": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request gemini": {
+      "main": [
+        [
+          {
+            "node": "Mail set node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail set node": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Testing Sheet": {
+      "main": [
+        [
+          {
+            "node": "set node for gemini",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Testing Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1e11e706-cf4b-4f9b-b17f-c3b52c9445dc",
+  "meta": {
+    "instanceId": "76c6092dd93a033c9847e2e8207d6546750d4825e60858fe5442b38806941b04"
+  },
+  "id": "Amh2nhgxroQlcYjC",
+  "tags": []
+}
