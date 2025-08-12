@@ -1,0 +1,670 @@
+{
+  "name": "Youtube Wf",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1220,
+        940
+      ],
+      "id": "ec4e1ba4-2322-409f-98c6-d7c010034870",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1YxnWdL9XRsg5OdLozm5LrkYY4R1IhGj_IZTBgGCsJd0",
+          "mode": "list",
+          "cachedResultName": "YouTube_Automation 2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YxnWdL9XRsg5OdLozm5LrkYY4R1IhGj_IZTBgGCsJd0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YxnWdL9XRsg5OdLozm5LrkYY4R1IhGj_IZTBgGCsJd0/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1000,
+        940
+      ],
+      "id": "bdb4cfc3-2162-40f7-8bcb-de8d6208e309",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ixK7bk1WBBixRy1y",
+          "name": "Google Sheets account 9"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json[\"Image1\"] }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "image1_file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -640,
+        940
+      ],
+      "id": "f7d8733c-db8c-42f9-9238-6da9562df3d7",
+      "name": "Image1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json[\"Image3\"]}}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "image3_file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -260,
+        940
+      ],
+      "id": "cb468a0e-5a9c-49db-bbf3-c9c2124ce6ac",
+      "name": "Image3"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json[\"Image2\"]}}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "image2_file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -400,
+        940
+      ],
+      "id": "95a5986d-7f0c-428d-8b95-6e3face04b4d",
+      "name": "Image2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json[\"Image4\"]}}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "image4_file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -100,
+        940
+      ],
+      "id": "53a82256-f174-430e-884a-eb4085623c6d",
+      "name": "Image4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json[\"Image5\"]}}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "image5_file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        60,
+        940
+      ],
+      "id": "3b221b9e-c1a8-427c-8ddc-e0e61bff4ff8",
+      "name": "Image5"
+    },
+    {
+      "parameters": {
+        "command": "={{ $json['command'] }}"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        260,
+        940
+      ],
+      "id": "c1768dd6-69e0-4446-9629-c60a01a78905",
+      "name": "Execute Command",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=C:\\Users\\niran\\.n8n\\image_{{ $runIndex}}.jpg",
+        "dataPropertyName": "image1_file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        700
+      ],
+      "id": "1f50bf9b-633d-4e47-842c-1e1a0c60545b",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "C:/n8n/files/Punch2.jpg.jpg",
+        "dataPropertyName": "image2_file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        700
+      ],
+      "id": "a39f7b83-015b-42a5-87f2-e30ff318baf9",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "C:/n8n/files/Punch3.jpg",
+        "dataPropertyName": "image3_file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        700
+      ],
+      "id": "ac2b2190-a2b9-4b33-b635-78b20c1153d9",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "C:/n8n/files/Punch4.jpg",
+        "dataPropertyName": "image4_file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        700
+      ],
+      "id": "ba23e8cc-ee07-40ac-9092-66335e9a73da",
+      "name": "Read/Write Files from Disk3"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "C:/n8n/files/TATA_PUNCH5.jpg",
+        "dataPropertyName": "image5_file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        80,
+        700
+      ],
+      "id": "92005b50-ba96-4f91-a0c8-d89b9352867b",
+      "name": "Read/Write Files from Disk4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const command = `ffmpeg -y \\\n-loop 1 -t 8 -i \"C:/n8n/files/Punch1.jpg.jpg\" \\\n-loop 1 -t 8 -i \"C:/n8n/files/Punch2.jpg.jpg\" \\\n-loop 1 -t 8 -i \"C:/n8n/files/Punch3.jpg\" \\\n-loop 1 -t 8 -i \"C:/n8n/files/Punch4.jpg.jpg\" \\\n-loop 1 -t 8 -i \"C:/n8n/files/TATA_PUNCH5.jpg\" \\\n-i \"C:/n8n/files/music1.mp3\" \\\n-filter_complex \"\\\n[0:v]scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1[v0]; \\\n[1:v]scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1[v1]; \\\n[2:v]scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1[v2]; \\\n[3:v]scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1[v3]; \\\n[4:v]scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1[v4]; \\\n[v0][v1][v2][v3][v4]concat=n=5:v=1:a=0[outv]\" \\\n-map \"[outv]\" -map 5:a -c:v libx264 -preset veryfast -crf 26 \\\n-c:a aac -b:a 192k -pix_fmt yuv420p -t 40 \\\n\"C:/n8n/files/step3_clean_video.mp4\"`;\n\nreturn [{ json: { command } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        700
+      ],
+      "id": "eb800fef-42fc-45b0-b462-fb8559c7b03c",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "const texts = [\n  $json.text1 || \"\",\n  $json.text2 || \"\",\n  $json.text3 || \"\",\n  $json.text4 || \"\"\n];\n\nconst drawtextParts = texts.map((text, i) => {\n  const start = i * 8;\n  const end = start + 8;\n\n  // Skip if text is empty or \"undefined\"\n  if (!text || text.trim().toLowerCase() === \"undefined\") return null;\n\n  return `drawtext=fontfile=/Windows/Fonts/arialbd.ttf:text='${text}':fontcolor=black:fontsize=85:borderw=6:bordercolor=white:x=(w-text_w)/2:y=H/4:enable='between(t\\\\,${start}\\\\,${end})'`;\n}).filter(Boolean);\n\nconst drawtextFilter = drawtextParts.join(',');\nconst scalePad = `scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2`;\nconst fullFilter = drawtextFilter? `${scalePad},${drawtextFilter}`:scalePad;\n\n// Build FFmpeg command\nconst command = drawtextFilter\n  ? `ffmpeg -y -i \"C:/n8n/files/step3_clean_video.mp4\" -vf \"${fullFilter}\" -c:a copy -c:v libx264 -crf 23 -preset veryfast \"C:/n8n/files/finalpunch3_video.mp4\"`\n  : `ffmpeg -y -i \"C:/n8n/files/step3_clean_video.mp4\" -c:a copy \"C:/n8n/files/finalpunch3_video.mp4\"`; // fallback if no text\n\nreturn {\n  command\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        380,
+        540
+      ],
+      "id": "01a52406-d617-431b-a982-ebad46616f26",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "command": "={{ $json['command'] }}"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        540,
+        540
+      ],
+      "id": "1f628c10-6e78-468c-bc96-076bc87b6bcd",
+      "name": "Execute Command1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c089e0d4-9110-4efa-84e1-e4fa2bf94318",
+              "name": "text1",
+              "value": "={{ $json['Text1'] }}",
+              "type": "string"
+            },
+            {
+              "id": "d1609f1b-48b2-4d2f-a324-88fe5df91013",
+              "name": "text2",
+              "value": "={{ $json['Text2'] }}",
+              "type": "string"
+            },
+            {
+              "id": "a841f09e-70c4-4e26-bece-440cd28e8ced",
+              "name": "text3",
+              "value": "={{ $json['Text3'] }}",
+              "type": "string"
+            },
+            {
+              "id": "7de32985-3996-4078-8b6f-96498a90a91d",
+              "name": "text4",
+              "value": "={{ $json['Text4'] }}",
+              "type": "string"
+            },
+            {
+              "id": "328a9c70-16c3-47d5-a010-ecd41136bc48",
+              "name": "title",
+              "value": "={{ $json['Topic'] }}",
+              "type": "string"
+            },
+            {
+              "id": "d8fe0f3c-dfeb-4772-8b02-41556c0730c3",
+              "name": "description",
+              "value": "={{ $json['Description'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -700,
+        540
+      ],
+      "id": "ca452d6c-fec7-439c-8768-b6f9edb725f1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $json['title'] }}",
+        "regionCode": "IN",
+        "categoryId": "=2",
+        "options": {
+          "description": "={{ $json['description'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        640,
+        1180
+      ],
+      "id": "7dc99cc6-6f7f-4fc3-ba69-48c7ac49fb49",
+      "name": "Upload a video"
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:/n8n/files/finalpunch3_video.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        740
+      ],
+      "id": "205785e5-db71-4a64-a60c-732b09504df6",
+      "name": "Read/Write Files from Disk5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const firstitem = items[0];\nreturn[\n  {\n    json:{\n      title: firstitem.json.Topic,\n      description: firstitem.json.Description\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        1160
+      ],
+      "id": "6a68a182-838b-4769-924b-98a3e46a57b5",
+      "name": "Code2",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        440,
+        1180
+      ],
+      "id": "ae396d3b-5a0e-4adb-b27e-6c9e47d17212",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {
+    "Image1": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      },
+      {
+        "json": {
+          "name": "Second item",
+          "code": 2
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image3": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image2": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image4": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image5": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Image2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk1": {
+      "main": [
+        [
+          {
+            "node": "Image3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk2": {
+      "main": [
+        [
+          {
+            "node": "Image4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk3": {
+      "main": [
+        [
+          {
+            "node": "Image5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk4": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Execute Command1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk5": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Upload a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "59454790-877a-47b6-bdf1-3f6862878756",
+  "meta": {
+    "instanceId": "64237e6ed13c22ceb7a488287299c49e2fbd0267120ba648886448008c00a817"
+  },
+  "id": "UbxPqXrIhYUynQ7d",
+  "tags": []
+}
