@@ -1,0 +1,268 @@
+{
+  "name": "WA Template Send WF",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "13rv5qqZjMtnPCH-PNVMcLyEkF2rD81Z2j3KD8WTJu9s",
+          "mode": "list",
+          "cachedResultName": "WA _Chatbot List",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13rv5qqZjMtnPCH-PNVMcLyEkF2rD81Z2j3KD8WTJu9s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13rv5qqZjMtnPCH-PNVMcLyEkF2rD81Z2j3KD8WTJu9s/edit#gid=0"
+        },
+        "event": "rowUpdate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -20
+      ],
+      "id": "17660d8d-587e-4a4a-970d-a52f407a658f",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "BUn3N6HNBJaFkXA0",
+          "name": "Google Sheets Trigger account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "737662312763704",
+        "recipientPhoneNumber": "={{ '91' + $json['Phone '].toString()}}",
+        "template": "derik_onam_offers|en_US",
+        "components": {
+          "component": [
+            {
+              "type": "header",
+              "headerParameters": {
+                "parameter": [
+                  {
+                    "type": "image",
+                    "imageLink": "https://i.ibb.co/Zz99RFrB/Whats-App-Image-2025-08-05-at-14-38-15-5378dfa5.jpg"
+                  }
+                ]
+              }
+            },
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $json['First Name'] }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        -20
+      ],
+      "id": "6da322b6-a7ed-442e-b961-67a6ecb6cba3",
+      "name": "WhatsApp Business Cloud",
+      "webhookId": "7dea7973-78a1-42c1-a6fd-15aac3f77475",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "v2L6szUd5TaImBWO",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f1ecaf7-edc1-46ab-9248-563825b0a067",
+              "name": "Whatsapp Status",
+              "value": " Message Send",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        -20
+      ],
+      "id": "f70a0610-e425-48a7-a798-854e73c4899b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "13rv5qqZjMtnPCH-PNVMcLyEkF2rD81Z2j3KD8WTJu9s",
+          "mode": "list",
+          "cachedResultName": "WA _Chatbot List",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13rv5qqZjMtnPCH-PNVMcLyEkF2rD81Z2j3KD8WTJu9s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13rv5qqZjMtnPCH-PNVMcLyEkF2rD81Z2j3KD8WTJu9s/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Whatsapp Status": "={{ $json['Whatsapp Status'] }}",
+            "Phone ": "={{ $('Google Sheets Trigger').item.json['Phone '] }}"
+          },
+          "matchingColumns": [
+            "Phone "
+          ],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone ",
+              "displayName": "Phone ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Whatsapp Status",
+              "displayName": "Whatsapp Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        260,
+        -20
+      ],
+      "id": "52806a27-13f4-4314-956c-b3c970c0b305",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ixK7bk1WBBixRy1y",
+          "name": "Google Sheets account 9"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Business Cloud": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1b708ffd-5a07-41d0-850b-ba0bbce4e9e5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "64237e6ed13c22ceb7a488287299c49e2fbd0267120ba648886448008c00a817"
+  },
+  "id": "R8QOQVmmaRGwH52B",
+  "tags": []
+}
